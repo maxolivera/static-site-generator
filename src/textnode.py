@@ -6,8 +6,8 @@ TextTypes = Enum("TextType",
             "bold",
             "italic",
             "code",
-            "links",
-            "images"
+            "link",
+            "image"
         ])
 
 class TextNode():

@@ -40,3 +40,10 @@ class TestHTMLNode(unittest.TestCase):
                 f"> HTMLNode(a, boot.dev, {childrens}, {node2.props})",
                 repr(node2)
                 )
+
+    def test_props_to_html(self):
+        node = a_node.copy()
+        self.assertEqual(
+            f"href=\"https://www.boot.dev\" target=\"_blank\"",
+            node.props_to_html()
+        )

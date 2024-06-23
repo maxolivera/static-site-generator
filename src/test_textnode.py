@@ -1,6 +1,9 @@
 import unittest
 
-from textnode import TextNode
+from textnode import (
+    TextNode,
+    TextTypes
+)
 
 basic_node = TextNode("This is a test", "bold")
 
@@ -20,5 +23,14 @@ class TestTextNode(unittest.TestCase):
         node = basic_node.copy()
         self.assertTrue(node.url == None)
         
+    def test_repr(self):
+        node = basic_node.copy()
+        node.text_type = TextTypes.code
+        node.url = "https://www.my.web.site"
+        self.assertEqual(
+                "TextNode(This is a test, code, https://www.my.web.site)",
+        repr(node)
+        )
+
 if __name__ == "__main__":
     unittest.main_()

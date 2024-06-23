@@ -38,3 +38,24 @@ class HTMLNode():
         props = None if self.props is None else dict(self.props)
         return HTMLNode(tag, value, children, props)
  
+class LeafNode(HTMLNode):
+    def __init__(self, tag, value, props=None):
+        # May raise an ValueError if value is None?
+        if value is None:
+            raise ValueError("Value cannot be None")
+        super().__init__(tag, value, None, props)
+
+    def to_html(self):
+        if self.value is None:
+            raise ValueError("Value cannot be None")
+        content = self.value
+        if not self.tag is None:
+            end_tag = f"</{self.tag}>"
+            start_tag = f"<{self.tag}"
+            if not self.props is None:
+                start_tag += f" {self.props_to_html()}"
+            start_tag += ">"
+            return start_tag + content + end_tag
+        else:
+            return content
+            

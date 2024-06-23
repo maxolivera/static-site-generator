@@ -1,3 +1,5 @@
+import functools
+
 class HTMLNode():
     def __init__(self, tag=None, value=None, children=None, props=None):
         self.tag = tag
@@ -27,13 +29,6 @@ class HTMLNode():
             and self_children == other_children
             and self.props == other.props
         )
-
-    def copy(self):
-        tag = self.tag
-        value = self.value
-        children = None if self.children is None else list(self.children)
-        props = None if self.props is None else dict(self.props)
-        return HTMLNode(tag, value, children, props)
  
 class LeafNode(HTMLNode):
     def __init__(self, tag, value, props=None):
@@ -52,3 +47,19 @@ class LeafNode(HTMLNode):
     
     def __repr__(self):
         return f"> LeafNode({self.tag}, {self.value}, {self.props})"
+
+class ParentNode(HTMLNode):
+    def __init__(self, tag, children, props=None):
+        super().__init__(tag, None, children, props)
+
+    def to_html(self):
+        if self.tag is None:
+            raise ValueError("A tag must be provided")
+        if self.children is None:
+            raise ValueError("A parent node must have children")
+         
+        return functools.reduce(
+            lambda string, child: string + child.to_html(),
+            self.children,
+            f"<{self.tag}{self.props_to_html()}>"
+        ) + f"</{self.tag}>"

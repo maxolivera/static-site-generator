@@ -10,12 +10,9 @@ class HTMLNode():
 
     def props_to_html(self):
         props = ""
-        for k in self.props:
-            attribute = f"{k}=\"{self.props[k]}\""
-            if len(props) == 0:
-                props = attribute
-            else:
-                props += " " + attribute
+        if not self.props is None:
+            for k in self.props:
+                props += f" {k}=\"{self.props[k]}\""
         return props
 
     def __repr__(self):
@@ -48,14 +45,10 @@ class LeafNode(HTMLNode):
     def to_html(self):
         if self.value is None:
             raise ValueError("Value cannot be None")
-        content = self.value
-        if not self.tag is None:
-            end_tag = f"</{self.tag}>"
-            start_tag = f"<{self.tag}"
-            if not self.props is None:
-                start_tag += f" {self.props_to_html()}"
-            start_tag += ">"
-            return start_tag + content + end_tag
+        if self.tag is None:
+            return self.value
         else:
-            return content
-            
+            return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
+    
+    def __repr__(self):
+        return f"> LeafNode({self.tag}, {self.value}, {self.props})"

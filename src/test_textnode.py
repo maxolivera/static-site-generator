@@ -30,7 +30,7 @@ class TestTextNode(unittest.TestCase):
         node.text_type = TextTypes.code
         node.url = "https://www.my.web.site"
         self.assertEqual(
-                "TextNode(This is a test, code, https://www.my.web.site)",
+                "TextNode(\"This is a test\", \"code\", https://www.my.web.site)",
         repr(node)
         )
 

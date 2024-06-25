@@ -54,14 +54,14 @@ def parse_text(node):
     while i < len(text):
         delimiter, step, text_type = identify_delimiter(text, i)
 
-        print(f"Current stack: {stack}\nCurrent char: \"{text[i]}\"\nCurrent segment: \"{current_segment}\"\nCurrent nodes: {parsed_nodes}\n")
+        # print(f"Current stack: {stack}\nCurrent char: \"{text[i]}\"\nCurrent segment: \"{current_segment}\"\nCurrent nodes: {parsed_nodes}\n")
         
         if delimiter:  # Check for delimiters 
-            print(f"\n| Text: '{text}'\n| I found a delimiter, which is: {delimiter} at {i} index\n")
+            # print(f"\n| Text: '{text}'\n| I found a delimiter, which is: {delimiter} at {i} index\n")
 
             if stack: # If stack isn't empty
                 if stack[-1][0] == delimiter: # and the delimiter matches with the current delimiter
-                    print("\n| It's a closing delimiter")
+                    # print("\n| It's a closing delimiter")
                     start_index = stack.pop()[1]
                     nested_text = text[start_index + len(delimiter):i]
                     
@@ -70,20 +70,20 @@ def parse_text(node):
 
                     if is_nested:
                         is_nested = False
-                        print(f"\n| This text: '{nested_text}' has a nested element!\n| The parse_text function will be called with this text: '{nested_text}' and this text_type: '{text_type}'\n| The TextNode will be as follows: '{repr(TextNode(nested_text, text_type))}'")
+                        # print(f"\n| This text: '{nested_text}' has a nested element!\n| The parse_text function will be called with this text: '{nested_text}' and this text_type: '{text_type}'\n| The TextNode will be as follows: '{repr(TextNode(nested_text, text_type))}'")
                         nested_element_list = parse_text(TextNode(nested_text, text_type))
                         parsed_nodes.append(nested_element_list)
                     else:
                         parsed_nodes.append(TextNode(nested_text, text_type))
-                        print(f"\n| I would append this text: \"{nested_text}\" as \"{text_type}\"\n")
+                        # print(f"\n| I would append this text: \"{nested_text}\" as \"{text_type}\"\n")
                     
                     current_segment = ""
             
                 else: # If stack isn't empty but delimiter didn't match
-                    print(f"\n| Found delimiter, but it's not: '{stack[-1][0]}'. Instead, is: '{delimiter}'\n")
+                    # print(f"\n| Found delimiter, but it's not: '{stack[-1][0]}'. Instead, is: '{delimiter}'\n")
                     is_nested = True
             else:
-                print("\n| It's an opening delimiter\n")
+                # print("\n| It's an opening delimiter\n")
                 if current_segment:
                     parsed_nodes.append(TextNode(current_segment, node.text_type.name))
                     current_segment = ""

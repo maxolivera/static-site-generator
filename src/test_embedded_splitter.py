@@ -6,7 +6,7 @@ from textnode import (TextTypes, TextNode)
 
 class TestEmbeddedSplitter(unittest.TestCase):
     def test_split_image(self):
-        print("\n--- Testing Embedded Splitter: image ---\n"
+        print("\n--- Testing Embedded Splitter: image ---\n")
         text = "This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and another ![second image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png)"
         expected_output = [
             TextNode("This is text with an ", "text"),
@@ -25,12 +25,12 @@ class TestEmbeddedSplitter(unittest.TestCase):
             print("\n--- End of test: Everything OK ---\n")
         except AssertionError as ae:
             print("\n| Test failed!\n")
-            print(f"\n| Text: '{text}'\n\n| Expected output: '{expected_output}'\n| Actual output: '{nodes}'")
+            print(f"\n| Text: '{text}'\n\n| Expected output: '{expected_output}'\n| Actual output:   '{nodes}'")
         except Exception as e:
             print(f"\n| Something went wrong!\n | Exception: {e}\n")
 
     def test_split_link(self):
-        print("\n--- Testing Embedded Splitter: link ---\n"
+        print("\n--- Testing Embedded Splitter: link ---\n")
         text = "This is text with an [image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and another [second image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png)"
         expected_output = [
             TextNode("This is text with an ", "text"),

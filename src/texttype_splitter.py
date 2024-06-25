@@ -44,6 +44,7 @@ def parse_text(node):
     if not isinstance(node, TextNode):
         raise ValueError(f"{node} is not a TextNode, it's a {node.__class__}")
 
+    url = node.url
     parsed_nodes = []
     current_segment = ""
     stack = [] # Tuple with delimiter string and index
@@ -71,10 +72,10 @@ def parse_text(node):
                     if is_nested:
                         is_nested = False
                         # print(f"\n| This text: '{nested_text}' has a nested element!\n| The parse_text function will be called with this text: '{nested_text}' and this text_type: '{text_type}'\n| The TextNode will be as follows: '{repr(TextNode(nested_text, text_type))}'")
-                        nested_element_list = parse_text(TextNode(nested_text, text_type))
+                        nested_element_list = parse_text(TextNode(nested_text, text_type, url))
                         parsed_nodes.append(nested_element_list)
                     else:
-                        parsed_nodes.append(TextNode(nested_text, text_type))
+                        parsed_nodes.append(TextNode(nested_text, text_type, url))
                         # print(f"\n| I would append this text: \"{nested_text}\" as \"{text_type}\"\n")
                     
                     current_segment = ""
@@ -85,7 +86,7 @@ def parse_text(node):
             else:
                 # print("\n| It's an opening delimiter\n")
                 if current_segment:
-                    parsed_nodes.append(TextNode(current_segment, node.text_type.name))
+                    parsed_nodes.append(TextNode(current_segment, node.text_type.name, url))
                     current_segment = ""
                 # Push delimiter to stack and move index
                 stack.append((delimiter, i))
@@ -95,7 +96,7 @@ def parse_text(node):
     
     # Append remaining text as a text node if any
     if current_segment:
-        parsed_nodes.append(TextNode(current_segment, node.text_type.name))
+        parsed_nodes.append(TextNode(current_segment, node.text_type.name, url))
 
     return parsed_nodes
 

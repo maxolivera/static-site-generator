@@ -1,6 +1,6 @@
 import unittest
 
-from converter import (text_node_to_html_node, split_nodes_delimiter)
+from texttype_splitter import (text_node_to_html_node, split_nodes_delimiter)
 from htmlnode import (HTMLNode, LeafNode, ParentNode)
 from textnode import (TextNode, TextTypes)
 

@@ -4,20 +4,12 @@ import copy
 
 import unittest
 
-p_node = HTMLNode(
-        "p",
-        "This is a text node" 
-        )
+p_node = HTMLNode("p", "This is a text node")
 
 a_node = HTMLNode(
-        "a",
-        "boot.dev",
-        None,
-        {
-            "href": "https://www.boot.dev",
-            "target": "_blank"
-        }
-        )
+    "a", "boot.dev", None, {"href": "https://www.boot.dev", "target": "_blank"}
+)
+
 
 class TestHTMLNode(unittest.TestCase):
     def test_eq(self):
@@ -39,16 +31,15 @@ class TestHTMLNode(unittest.TestCase):
         node2 = copy.deepcopy(a_node)
         node2.children = childrens
         self.assertEqual(
-                f"> HTMLNode(a, boot.dev, {childrens}, {node2.props})",
-                repr(node2)
-                )
+            f"> HTMLNode(a, boot.dev, {childrens}, {node2.props})", repr(node2)
+        )
 
     def test_props_to_html(self):
         node = copy.deepcopy(a_node)
         self.assertEqual(
-            f" href=\"https://www.boot.dev\" target=\"_blank\"",
-            node.props_to_html()
+            f' href="https://www.boot.dev" target="_blank"', node.props_to_html()
         )
+
 
 if __name__ == "__main__":
     unittest.main_()

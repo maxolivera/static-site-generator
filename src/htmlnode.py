@@ -1,6 +1,7 @@
 import functools
 
-class HTMLNode():
+
+class HTMLNode:
     def __init__(self, tag=None, value=None, children=None, props=None):
         self.tag = tag
         self.value = value
@@ -14,7 +15,7 @@ class HTMLNode():
         props = ""
         if not self.props is None:
             for k in self.props:
-                props += f" {k}=\"{self.props[k]}\""
+                props += f' {k}="{self.props[k]}"'
         return props
 
     def __repr__(self):
@@ -29,7 +30,8 @@ class HTMLNode():
             and self_children == other_children
             and self.props == other.props
         )
- 
+
+
 class LeafNode(HTMLNode):
     def __init__(self, tag, value, props=None):
         # May raise an ValueError if value is None?
@@ -44,9 +46,10 @@ class LeafNode(HTMLNode):
             return self.value
         else:
             return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
-    
+
     def __repr__(self):
         return f"> LeafNode({self.tag}, {self.value}, {self.props})"
+
 
 class ParentNode(HTMLNode):
     def __init__(self, tag, children, props=None):
@@ -57,9 +60,12 @@ class ParentNode(HTMLNode):
             raise ValueError("A tag must be provided")
         if self.children is None:
             raise ValueError("A parent node must have children")
-         
-        return functools.reduce(
-            lambda string, child: string + child.to_html(),
-            self.children,
-            f"<{self.tag}{self.props_to_html()}>"
-        ) + f"</{self.tag}>"
+
+        return (
+            functools.reduce(
+                lambda string, child: string + child.to_html(),
+                self.children,
+                f"<{self.tag}{self.props_to_html()}>",
+            )
+            + f"</{self.tag}>"
+        )

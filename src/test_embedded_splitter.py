@@ -1,8 +1,9 @@
 import unittest
 
-from embedded_splitter import (split_nodes_link, split_nodes_image)
+from embedded_splitter import split_nodes_link, split_nodes_image
 
-from textnode import (TextTypes, TextNode)
+from textnode import TextTypes, TextNode
+
 
 class TestEmbeddedSplitter(unittest.TestCase):
     def test_split_image(self):
@@ -10,22 +11,29 @@ class TestEmbeddedSplitter(unittest.TestCase):
         text = "This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and another ![second image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png)"
         expected_output = [
             TextNode("This is text with an ", "text"),
-            TextNode("image", "image", "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png"),
+            TextNode(
+                "image",
+                "image",
+                "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png",
+            ),
             TextNode(" and another ", "text"),
-            TextNode("second image", "image", "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png"),
+            TextNode(
+                "second image",
+                "image",
+                "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png",
+            ),
         ]
 
         nodes = split_nodes_image([TextNode(text, "text")])
 
         try:
-            self.assertEqual(
-                expected_output,
-                nodes
-            )
+            self.assertEqual(expected_output, nodes)
             print("\n--- End of test: Everything OK ---\n")
         except AssertionError as ae:
             print("\n| Test failed!\n")
-            print(f"\n| Text: '{text}'\n\n| Expected output: '{expected_output}'\n| Actual output:   '{nodes}'")
+            print(
+                f"\n| Text: '{text}'\n\n| Expected output: '{expected_output}'\n| Actual output:   '{nodes}'"
+            )
         except Exception as e:
             print(f"\n| Something went wrong!\n | Exception: {e}\n")
 
@@ -34,21 +42,28 @@ class TestEmbeddedSplitter(unittest.TestCase):
         text = "This is text with an [image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and another [second image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png)"
         expected_output = [
             TextNode("This is text with an ", "text"),
-            TextNode("image", "link", "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png"),
+            TextNode(
+                "image",
+                "link",
+                "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png",
+            ),
             TextNode(" and another ", "text"),
-            TextNode("second image", "link", "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png"),
+            TextNode(
+                "second image",
+                "link",
+                "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png",
+            ),
         ]
 
         nodes = split_nodes_link([TextNode(text, "text")])
 
         try:
-            self.assertEqual(
-                expected_output,
-                nodes
-            )
+            self.assertEqual(expected_output, nodes)
             print("\n--- End of test: Everything OK ---\n")
         except AssertionError as ae:
             print("\n| Test failed!\n")
-            print(f"\n| Text: '{text}'\n\n| Expected output: '{expected_output}'\n| Actual output: '{nodes}'")
+            print(
+                f"\n| Text: '{text}'\n\n| Expected output: '{expected_output}'\n| Actual output: '{nodes}'"
+            )
         except Exception as e:
             print(f"\n| Something went wrong!\n | Exception: {e}\n")

@@ -59,7 +59,7 @@ def markdown_to_html_node(markdown):
             for line in lines:
                 new_list = text_to_textnodes(line)
                 if len(new_list) == 1:
-                    lines_to_append.append(new_list[0])
+                    lines_to_append.append(new_list)
                 else:
                     lines_to_append.append(new_list)
             print(f"\n| LINES TO APPEND: {lines_to_append}\n")
@@ -89,13 +89,23 @@ def markdown_to_html_node(markdown):
                 children.append(
                         ParentNode(
                             tag,
-                            list(map(lambda node: ParentNode("li", [text_node_to_html_node(node)]), nodes)))
+                            list(
+                                map(lambda node: ParentNode("li", list(map(lambda line: text_node_to_html_node(line), node))),
+                                    nodes
+                                    )
+                            )
+                        )
                 )
             case "ol":
                 children.append(
                         ParentNode(
                             tag,
-                            list(map(lambda node: ParentNode("li", [text_node_to_html_node(node)]), nodes)))
+                            list(
+                                map(lambda node: ParentNode("li", list(map(lambda line: text_node_to_html_node(line), node))),
+                                    nodes
+                                    )
+                            )
+                    )
                 )
             case "code":
                 children.append(

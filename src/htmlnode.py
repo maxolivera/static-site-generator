@@ -24,21 +24,52 @@ class HTMLNode:
         return f"HTMLNode({self.tag}, {self.value}, {self.children}, {self.props})"
 
     def __eq__(self, other):
-        self_children = None if self.children is None else copy.deepcopy(self.children)
-        other_children = None if other.children is None else copy.deepcopy(other.children)
-        if self.props is None and self.props is None:
-            props_equals = True
-        elif self.props is None or self.props is None:
-            props_equals = False
+        if not isinstance(other, HTMLNode):
+            return False
+        
+        # Compare tags
+        tags_equal = self.tag == other.tag
+        
+        # Compare values
+        values_equal = self.value == other.value
+        
+        # Compare children presence and their values if both are not None
+        if self.children is None and other.children is None:
+            children_equal = True
+        elif self.children is None or other.children is None:
+            children_equal = False
         else:
-            props_equals = all((self.props.get(k) == v for k, v in other.props.items()))
+            # Element-wise comparison of children lists
+            if len(self.children) != len(other.children):
+                children_equal = False
+            else:
+                children_equal = all(child_self == child_other for child_self, child_other in zip(self.children, other.children))
 
-        return (
-            self.tag == other.tag
-            and self.value == other.value
-            and self_children == other_children
-            and props_equals
-        )
+        if not children_equal:
+            for child_self, child_other in zip(self.children, other.children):
+                if child_self != child_other:
+                    print(f"Different child: {child_self} != {child_other}")
+
+        
+        # Compare props
+        if self.props is None and other.props is None:
+            props_equal = True
+        elif self.props is None or other.props is None:
+            props_equal = False
+        else:
+            props_equal = (
+                all(self.props.get(k) == v for k, v in other.props.items()) # Compare "two times" because the keys may be different 
+                and all(other.props.get(k) == v for k, v in self.props.items())
+            )
+
+        equal = tags_equal and values_equal and children_equal and props_equal
+        
+        equal_list = [tags_equal, values_equal, children_equal, props_equal]
+
+        if not equal:
+            print(f"\n| These HTMLNodes are not the same! '{equal_list}'\n| '{self}'\n| '{other}'")
+
+        return equal
 
 
 class LeafNode(HTMLNode):
@@ -57,7 +88,10 @@ class LeafNode(HTMLNode):
             return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
 
     def __eq__(self, other):
-        super().__eq__(other)
+        if not isinstance(other, LeafNode):
+            return False
+
+        return super().__eq__(other)
 
     def __repr__(self):
         final_string = "LeafNode("
@@ -94,6 +128,12 @@ class ParentNode(HTMLNode):
             + f"</{self.tag}>"
         )
     
+    def __eq__(self, other):
+        if not isinstance(other, ParentNode):
+            return False
+
+        return super().__eq__(other)
+
     def __repr__(self):
         final_string = f"ParentNode(\"{self.tag}\", {self.children}"
         if self.props is not None:

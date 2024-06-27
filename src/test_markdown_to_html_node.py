@@ -68,7 +68,10 @@ class TestMDToHTMLNode(unittest.TestCase):
                 ),
                 ParentNode(
                     "p",
-                    [LeafNode("code", "HTML"), LeafNode(None, " is great!")]
+                    [
+                        LeafNode("code", "HTML"),
+                        LeafNode(None, " is great!")
+                    ]
                 )
             ]
         )

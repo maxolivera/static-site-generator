@@ -13,12 +13,19 @@ BlockType = Enum(
 
 
 def text_to_textnodes(text):
-    node = TextNode(text, "text")
-    print("\nExtracting embedded:\n")
-    mid_nodes = split_nodes_link(split_nodes_image([node]))
-    print(f"{mid_nodes}\nExtracting other text types:")
-    final_nodes = split_nodes_delimiter(mid_nodes)
-    print(f"{final_nodes}")
+    if isinstance(text, list):
+        final_nodes = []
+        for item in text:
+            final_nodes.append(text_to_textnodes(item))
+    elif not isinstance(text, str):
+        raise TypeError(f"The text is not a string, is a {text.__class__}.\nText:{text}")
+    else:
+        node = TextNode(text, "text")
+        print("\nExtracting embedded:\n")
+        mid_nodes = split_nodes_link(split_nodes_image([node]))
+        print(f"{mid_nodes}\nExtracting other text types:")
+        final_nodes = split_nodes_delimiter(mid_nodes)
+        print(f"{final_nodes}")
     return final_nodes
 
 

@@ -1,6 +1,4 @@
-from textnode import TextNode, TextTypes
-
-from htmlnode import HTMLNode, ParentNode, LeafNode
+from textnode import TextNode
 
 
 def identify_delimiter(text, index):

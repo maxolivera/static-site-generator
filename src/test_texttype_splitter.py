@@ -1,8 +1,8 @@
 import unittest
 
 from texttype_splitter import split_nodes_delimiter
-from htmlnode import HTMLNode, LeafNode, ParentNode
-from textnode import TextNode, TextTypes
+
+from textnode import TextNode
 
 
 class TestSplitter(unittest.TestCase):

@@ -31,13 +31,13 @@ class TestHTMLNode(unittest.TestCase):
         node2 = copy.deepcopy(a_node)
         node2.children = childrens
         self.assertEqual(
-            f"> HTMLNode(a, boot.dev, {childrens}, {node2.props})", repr(node2)
+            f"HTMLNode(a, boot.dev, {childrens}, {node2.props})", repr(node2)
         )
 
     def test_props_to_html(self):
         node = copy.deepcopy(a_node)
         self.assertEqual(
-            f' href="https://www.boot.dev" target="_blank"', node.props_to_html()
+            ' href="https://www.boot.dev" target="_blank"', node.props_to_html()
         )
 
 

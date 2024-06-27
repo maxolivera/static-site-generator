@@ -167,4 +167,5 @@ node_modules/
 # package.json
 package.json
 
-
+# static content
+static/

@@ -1,6 +1,6 @@
 import functools
 
-import copy
+import logging
 
 
 class HTMLNode:
@@ -118,6 +118,8 @@ class ParentNode(HTMLNode):
             raise ValueError("A tag must be provided")
         if self.children is None:
             raise ValueError("A parent node must have children")
+        
+        logging.getLogger(__name__).debug(f"Children: {self.children}")
 
         return (
             functools.reduce(

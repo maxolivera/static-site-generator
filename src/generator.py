@@ -62,10 +62,38 @@ def generate_path(from_path: str, template_path: str, dest_path: str):
 
     # If dest_path doesn't exits, create it
     dir_dest_path = os.path.dirname(dest_path)
+    logger.debug(f"The destination path is: '{dir_dest_path}'")
+    logger.debug(f"The destination path, including file, is: '{dest_path}'")
+    
+
     if not os.path.isdir(dir_dest_path):
-        logger.warning(f"Destination directory not found, it will be created: '{dest_path}')")
-        os.makedirs(dest_path)
+        logger.warning(f"Destination directory not found, it will be created: '{dir_dest_path}')")
+        os.makedirs(dir_dest_path)
 
     # Create file
     with open(dest_path, "w+", encoding="utf-8") as f:
         f.write(document)
+
+def generate_pages_recursive(dir_path_content: str, template_path:str, dest_dir_path:str):
+    for path in os.listdir(dir_path_content):
+        current_path = os.path.join(dir_path_content, path)
+        if os.path.isdir(current_path):   
+            logging.getLogger(__name__).debug(f"Found a directory: {current_path}'")
+            new_dest = os.path.join(dest_dir_path, path)
+            generate_pages_recursive(
+                current_path,
+                template_path,
+                new_dest
+            )
+        elif os.path.isfile(current_path):
+            if path[-3:] == ".md":
+                logging.getLogger(__name__).debug(f"Found a '.md' file: {current_path}'")
+                new_path = path[:-3] + ".html"
+                new_dest = os.path.join(dest_dir_path, new_path)
+                generate_path(
+                    current_path,
+                    template_path,
+                    new_dest
+                )
+        else:
+            raise Exception(f"Path invalid: '{current_path}'")

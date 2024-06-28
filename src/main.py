@@ -6,7 +6,7 @@ from copy_files import copy_files
 
 import os
 
-from generator import generate_path
+from generator import generate_pages_recursive
 
 
 def main():
@@ -29,16 +29,6 @@ def main():
     list_files = os.listdir()
     
     content_dir = "content"
-    md_files = []
-
-    if os.path.isdir(content_dir):
-        content_dir_files = os.listdir(content_dir)
-        if len(content_dir_files) == 0:
-            raise Exception("No files on 'content' folder")
-        for file in content_dir_files:
-            if file[-3:] == ".md":
-                md_files.append(file)
-        logger.info(f"{len(md_files)} '.md' files found")
 
     template_file = None
 
@@ -52,12 +42,10 @@ def main():
     if template_file is None:
         raise Exception("'template.html' file not found")
 
-    for file in md_files:
-        logger.info(f"Generating '{file[:-3]}.html' file of {file}")
-        generate_path(
-            os.path.join(content_dir, file),
-            template_file,
-            os.path.join("public", file[:-3] + ".html")
-        )
+    generate_pages_recursive(
+        content_dir,
+        template_file,
+        "public/"
+    )
 
 main()
